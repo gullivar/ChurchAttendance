@@ -3,6 +3,7 @@ import { Student, DailyAttendance } from '../types';
 const STORAGE_KEYS = {
   STUDENTS: 'church_app_students',
   ATTENDANCE: 'church_app_attendance',
+  THEME: 'church_app_theme',
 };
 
 export const storageService = {
@@ -34,6 +35,20 @@ export const storageService = {
 
   saveAttendance: (history: DailyAttendance[]) => {
     localStorage.setItem(STORAGE_KEYS.ATTENDANCE, JSON.stringify(history));
+  },
+
+  // --- Theme ---
+  loadTheme: (): 'light' | 'dark' => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.THEME);
+      return stored === 'dark' ? 'dark' : 'light';
+    } catch (e) {
+      return 'light';
+    }
+  },
+
+  saveTheme: (theme: 'light' | 'dark') => {
+    localStorage.setItem(STORAGE_KEYS.THEME, theme);
   },
 
   // --- Full DB (JSON File System Simulation) ---

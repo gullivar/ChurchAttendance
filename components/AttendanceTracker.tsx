@@ -175,11 +175,11 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
 
   const getStatusColor = (status: AttendanceStatus) => {
     switch (status) {
-      case AttendanceStatus.PRESENT: return 'text-emerald-600 bg-emerald-50 border-emerald-200';
-      case AttendanceStatus.ABSENT: return 'text-red-600 bg-red-50 border-red-200';
-      case AttendanceStatus.LATE: return 'text-amber-600 bg-amber-50 border-amber-200';
-      case AttendanceStatus.EXCUSED: return 'text-blue-600 bg-blue-50 border-blue-200';
-      default: return 'text-gray-400 bg-gray-50 border-gray-200';
+      case AttendanceStatus.PRESENT: return 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800';
+      case AttendanceStatus.ABSENT: return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800';
+      case AttendanceStatus.LATE: return 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800';
+      case AttendanceStatus.EXCUSED: return 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800';
+      default: return 'text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700';
     }
   };
 
@@ -201,27 +201,27 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-gray-800">출석부</h2>
-          <p className="text-gray-500 mt-1">날짜를 선택하고 학생들의 출석 상태를 관리하세요.</p>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white">출석부</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">날짜를 선택하고 학생들의 출석 상태를 관리하세요.</p>
         </div>
-        <div className="flex items-center bg-white rounded-xl shadow-sm border border-gray-200 p-1">
+        <div className="flex items-center bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-1">
             <button 
                 onClick={() => {
                     const d = new Date(selectedDate);
                     d.setDate(d.getDate() - 1);
                     setSelectedDate(d.toISOString().split('T')[0]);
                 }}
-                className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition text-gray-600 dark:text-gray-300"
             >
                 <ChevronLeft size={20} />
             </button>
-            <div className="flex items-center px-4 font-medium text-gray-700">
-                <Calendar size={18} className="mr-2 text-indigo-600" />
+            <div className="flex items-center px-4 font-medium text-gray-700 dark:text-gray-200">
+                <Calendar size={18} className="mr-2 text-indigo-600 dark:text-indigo-400" />
                 <input 
                     type="date" 
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="bg-transparent focus:outline-none cursor-pointer"
+                    className="bg-transparent focus:outline-none cursor-pointer dark:invert-[.9]"
                 />
             </div>
             <button 
@@ -230,7 +230,7 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
                     d.setDate(d.getDate() + 1);
                     setSelectedDate(d.toISOString().split('T')[0]);
                 }}
-                className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition text-gray-600 dark:text-gray-300"
             >
                 <ChevronRight size={20} />
             </button>
@@ -239,7 +239,7 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
 
       {/* Quick Stats & Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-         <div className="bg-indigo-600 text-white rounded-xl p-6 shadow-md flex flex-col justify-between">
+         <div className="bg-indigo-600 dark:bg-indigo-700 text-white rounded-xl p-6 shadow-md flex flex-col justify-between">
              <div className="flex items-center justify-between mb-4">
                  <p className="text-indigo-100 text-sm font-medium">오늘 출석 현황</p>
                  <div className="h-8 w-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -252,13 +252,13 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
              </div>
          </div>
          
-         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 col-span-2 flex flex-col gap-3">
+         <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 col-span-2 flex flex-col gap-3">
              {/* Filter */}
              <div className="w-full">
                  <select 
                     value={filterCell} 
                     onChange={(e) => setFilterCell(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50 text-base font-medium"
+                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-base font-medium"
                  >
                      <option value="All">모든 셀(구역) 보기</option>
                      {uniqueCells.map(cell => <option key={cell} value={cell}>{cell}</option>)}
@@ -277,7 +277,7 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
                 
                 <button
                     onClick={handleImportClick}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition shadow-sm font-bold"
+                    className="w-full flex items-center justify-center px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm font-bold"
                     title="출석부 파일 불러오기"
                 >
                     <Upload size={18} className="mr-2" />
@@ -286,7 +286,7 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
                 
                 <button
                     onClick={handleExportCSV}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition shadow-sm font-bold"
+                    className="w-full flex items-center justify-center px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm font-bold"
                     title="전체 출석 기록 다운로드"
                 >
                     <Download size={18} className="mr-2" />
@@ -295,7 +295,7 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
                 
                 <button 
                     onClick={handleSave}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition shadow-md"
+                    className="w-full flex items-center justify-center px-4 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition shadow-md"
                 >
                     <Save size={18} className="mr-2" />
                     출석상태 내용 저장
@@ -304,22 +304,22 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
          </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="grid grid-cols-12 bg-gray-50 border-b border-gray-200 text-gray-500 font-medium text-sm py-3 px-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="grid grid-cols-12 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-300 font-medium text-sm py-3 px-4">
               <div className="col-span-3 md:col-span-2">이름</div>
               <div className="col-span-3 md:col-span-2">셀</div>
               <div className="col-span-6 md:col-span-8 text-center">출석 상태</div>
           </div>
           
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 dark:divide-gray-700">
               {filteredStudents.length > 0 ? filteredStudents.map(student => (
-                  <div key={student.id} className="grid grid-cols-12 items-center py-4 px-4 hover:bg-gray-50 transition">
-                      <div className="col-span-3 md:col-span-2 font-medium text-gray-900">
+                  <div key={student.id} className="grid grid-cols-12 items-center py-4 px-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                      <div className="col-span-3 md:col-span-2 font-medium text-gray-900 dark:text-gray-100">
                           {student.name}
                           <div className="text-xs text-gray-400 font-normal md:hidden">{student.cellName}</div>
                       </div>
-                      <div className="col-span-3 md:col-span-2 text-gray-600 hidden md:block">
-                          <span className="px-2 py-1 bg-gray-100 rounded text-xs">{student.cellName}</span>
+                      <div className="col-span-3 md:col-span-2 text-gray-600 dark:text-gray-400 hidden md:block">
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">{student.cellName}</span>
                       </div>
                       
                       <div className="col-span-9 md:col-span-8 flex justify-end md:justify-center gap-2">
@@ -333,15 +333,15 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
                           </button>
 
                           {/* Desktop Buttons */}
-                          <div className="hidden md:flex bg-gray-100 p-1 rounded-lg">
+                          <div className="hidden md:flex bg-gray-100 dark:bg-gray-900/50 p-1 rounded-lg">
                               {Object.values(AttendanceStatus).map((status) => (
                                   <button
                                     key={status}
                                     onClick={() => handleStatusChange(student.id, status)}
                                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition flex items-center gap-1 ${
                                         currentRecords[student.id] === status 
-                                        ? 'bg-white text-gray-800 shadow-sm ring-1 ring-black/5' 
-                                        : 'text-gray-500 hover:text-gray-700'
+                                        ? 'bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm ring-1 ring-black/5' 
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                     }`}
                                   >
                                       {currentRecords[student.id] === status && getStatusIcon(status)}
@@ -352,7 +352,7 @@ const AttendanceTracker: React.FC<AttendanceTrackerProps> = ({ students, attenda
                       </div>
                   </div>
               )) : (
-                  <div className="p-8 text-center text-gray-400">
+                  <div className="p-8 text-center text-gray-400 dark:text-gray-500">
                       학생 데이터가 없습니다. 학생 관리 메뉴에서 학생을 추가해주세요.
                   </div>
               )}

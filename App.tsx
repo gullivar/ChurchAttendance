@@ -8,7 +8,7 @@ import Settings from './components/Settings';
 import GlobalLoading from './components/GlobalLoading';
 import { storageService } from './services/storage';
 import { actionQueue } from './services/queueService';
-import { LayoutDashboard, Users, ClipboardList, Church, Settings as SettingsIcon } from 'lucide-react';
+import { LayoutDashboard, Users, ClipboardList, Settings as SettingsIcon, Church, Moon, Sun } from 'lucide-react';
 
 // --- Helper for Random Data Generation ---
 const generateInitialStudents = (): Student[] => {
@@ -51,7 +51,7 @@ const generateInitialStudents = (): Student[] => {
   return students;
 };
 
-// Helper for generating random attendance for past 5 weeks (Updated from 4)
+// Helper for generating random attendance for past 5 weeks
 const generateInitialAttendance = (students: Student[]): DailyAttendance[] => {
     const today = new Date();
     const history: DailyAttendance[] = [];
@@ -60,7 +60,6 @@ const generateInitialAttendance = (students: Student[]): DailyAttendance[] => {
     for(let i = 0; i < 5; i++) {
         const d = new Date(today);
         d.setDate(today.getDate() - (i * 7)); // Go back weeks
-        // Adjust to nearest Sunday if not (simple mock logic, just using calculated date)
         
         const dateStr = d.toISOString().split('T')[0];
         
@@ -87,7 +86,8 @@ const generateInitialAttendance = (students: Student[]): DailyAttendance[] => {
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'students' | 'attendance' | 'settings'>('dashboard');
   const [isProcessing, setIsProcessing] = useState(false);
-  
+  const [isDarkMode, setIsDarkMode] = useState(() => storageService.loadTheme() === 'dark');
+
   // Initialize state with storage service
   const [students, setStudents] = useState<Student[]>(() => {
     const loaded = storageService.loadStudents();
@@ -97,6 +97,16 @@ const App: React.FC = () => {
   const [attendanceHistory, setAttendanceHistory] = useState<DailyAttendance[]>(() => {
     return storageService.loadAttendance();
   });
+
+  // Dark Mode Effect
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    storageService.saveTheme(isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   // Queue Listener
   useEffect(() => {
@@ -212,7 +222,6 @@ const App: React.FC = () => {
     if (totalStudents === 0) return { totalStudents: 0, attendanceRate: 0, recentTrend: [] };
 
     const sortedHistory = [...attendanceHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    // Slice last 5 weeks instead of 4
     const recent = sortedHistory.slice(-5);
 
     const latest = recent[recent.length - 1];
@@ -225,7 +234,6 @@ const App: React.FC = () => {
     const recentTrend = recent.map(day => {
       const presentCount = day.records.filter(r => r.status === AttendanceStatus.PRESENT).length;
       const rate = (presentCount / totalStudents) * 100;
-      // Add count for tooltip
       return { date: day.date.substring(5), rate, count: presentCount }; 
     });
 
@@ -244,67 +252,53 @@ const App: React.FC = () => {
   ] as const;
 
   return (
-    <div className="min-h-screen flex bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 transition-colors duration-200">
       <GlobalLoading isLoading={isProcessing} />
 
-      {/* Sidebar (Desktop) */}
-      <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200 fixed h-full z-10">
-        <div className="p-6 flex items-center gap-3 border-b border-gray-100">
-          <div className="bg-indigo-600 p-2 rounded-lg text-white">
-            <Church size={24} />
-          </div>
-          <h1 className="text-xl font-bold text-gray-800 tracking-tight">초등부 출석부</h1>
+      {/* Mobile-First Top Header (Visible on ALL screens) */}
+      <header className="fixed top-0 left-0 right-0 h-24 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-40 px-4 flex items-center justify-between shadow-sm transition-colors duration-200">
+        {/* Left: Icon (Optional) */}
+        <div className="w-10 flex items-center justify-center">
+           <Church size={28} className="text-indigo-600 dark:text-indigo-400" />
         </div>
-        
-        <nav className="flex-1 p-4 space-y-1">
-          {navItems.map(item => (
+
+        {/* Center: Title */}
+        <h1 className="flex-1 text-center text-2xl md:text-4xl font-black text-gray-900 dark:text-white leading-tight whitespace-pre-line">
+          동부광성교회{'\n'}초등1부 출석부
+        </h1>
+
+        {/* Right: Theme Toggle */}
+        <div className="w-10 flex items-center justify-center">
             <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id as any)}
-              className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
-                activeTab === item.id 
-                  ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-sm' 
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-              }`}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+              aria-label="Toggle Dark Mode"
             >
-              <item.icon 
-                size={20} 
-                className={`mr-3 ${activeTab === item.id ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`} 
-              />
-              {item.label}
+              {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
             </button>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-gray-100">
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Data Storage</p>
-            <div className="flex items-center gap-2 text-sm text-indigo-600">
-              <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
-              JSON DB / Queue Mode
-            </div>
-          </div>
         </div>
-      </aside>
+      </header>
 
-      {/* Mobile Bottom Nav */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-3 z-50 pb-safe">
+      {/* Mobile Bottom Nav (Visible on ALL screens) */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around p-2 pb-safe z-40 transition-colors duration-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
          {navItems.map(item => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id as any)}
-              className={`flex flex-col items-center p-2 rounded-lg ${
-                activeTab === item.id ? 'text-indigo-600' : 'text-gray-400'
+              className={`flex flex-col items-center justify-center p-2 rounded-xl w-full transition-all duration-200 ${
+                activeTab === item.id 
+                ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 font-bold' 
+                : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700/30'
               }`}
             >
-              <item.icon size={24} />
-              <span className="text-[10px] mt-1 font-medium">{item.label}</span>
+              <item.icon size={24} className={activeTab === item.id ? 'mb-1' : 'mb-1'} />
+              <span className="text-[11px] font-medium">{item.label}</span>
             </button>
           ))}
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 lg:ml-64 pb-20 lg:pb-0 transition-all duration-300">
+      {/* Main Content (Adjusted padding for Header and Bottom Nav) */}
+      <main className="flex-1 pt-28 pb-24 w-full max-w-screen-xl mx-auto transition-all duration-300">
         {activeTab === 'dashboard' && (
           <Dashboard 
             stats={dashboardStats} 

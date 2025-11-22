@@ -13,14 +13,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-white p-3 border border-gray-100 shadow-lg rounded-xl text-sm z-50">
-        <p className="font-bold text-gray-700 mb-2 border-b border-gray-100 pb-1">{label}</p>
+      <div className="bg-white dark:bg-gray-800 p-3 border border-gray-100 dark:border-gray-700 shadow-lg rounded-xl text-sm z-50">
+        <p className="font-bold text-gray-700 dark:text-gray-200 mb-2 border-b border-gray-100 dark:border-gray-700 pb-1">{label}</p>
         <div className="space-y-1">
-          <p className="text-indigo-600 font-semibold flex justify-between gap-4">
+          <p className="text-indigo-600 dark:text-indigo-400 font-semibold flex justify-between gap-4">
             <span>출석률:</span>
             <span>{Math.round(data.rate)}%</span>
           </p>
-          <p className="text-gray-500 text-xs flex justify-between gap-4">
+          <p className="text-gray-500 dark:text-gray-400 text-xs flex justify-between gap-4">
             <span>출석 인원:</span>
             <span>{data.count}명</span>
           </p>
@@ -52,39 +52,39 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <header className="mb-8">
-        <h2 className="text-3xl font-bold text-gray-800">대시보드</h2>
-        <p className="text-gray-500 mt-2">교회 학교 출석 현황을 한눈에 확인하세요.</p>
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white">대시보드</h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">교회 학교 출석 현황을 한눈에 확인하세요.</p>
       </header>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4 transition hover:shadow-md">
-          <div className="p-3 bg-indigo-100 rounded-full text-indigo-600">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center space-x-4 transition hover:shadow-md">
+          <div className="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-full text-indigo-600 dark:text-indigo-400">
             <Users size={24} />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500">총 등록 학생</p>
-            <h3 className="text-2xl font-bold text-gray-800">{stats.totalStudents}명</h3>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">총 등록 학생</p>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{stats.totalStudents}명</h3>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4 transition hover:shadow-md">
-          <div className="p-3 bg-emerald-100 rounded-full text-emerald-600">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center space-x-4 transition hover:shadow-md">
+          <div className="p-3 bg-emerald-100 dark:bg-emerald-900/50 rounded-full text-emerald-600 dark:text-emerald-400">
             <CalendarCheck size={24} />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500">최근 출석률</p>
-            <h3 className="text-2xl font-bold text-gray-800">{stats.attendanceRate.toFixed(1)}%</h3>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">최근 출석률</p>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{stats.attendanceRate.toFixed(1)}%</h3>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4 transition hover:shadow-md">
-          <div className="p-3 bg-amber-100 rounded-full text-amber-600">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center space-x-4 transition hover:shadow-md">
+          <div className="p-3 bg-amber-100 dark:bg-amber-900/50 rounded-full text-amber-600 dark:text-amber-400">
             <TrendingUp size={24} />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500">지난주 대비</p>
-            <h3 className="text-2xl font-bold text-gray-800">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">지난주 대비</p>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
               {stats.recentTrend.length >= 2 
                 ? (stats.recentTrend[stats.recentTrend.length - 1].rate - stats.recentTrend[stats.recentTrend.length - 2].rate).toFixed(1) 
                 : 0}%
@@ -95,21 +95,21 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Chart Section */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">월간 출석 추이</h3>
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+          <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">월간 출석 추이</h3>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stats.recentTrend}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#6b7280', fontSize: 12}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#6b7280', fontSize: 12}} domain={[0, 100]} unit="%" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" strokeOpacity={0.2} />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} domain={[0, 100]} unit="%" />
                 <Tooltip 
                   content={<CustomTooltip />}
-                  cursor={{fill: '#f3f4f6'}}
+                  cursor={{fill: 'rgba(255,255,255,0.05)'}}
                 />
                 <Bar dataKey="rate" radius={[6, 6, 0, 0]}>
                   {stats.recentTrend.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === stats.recentTrend.length - 1 ? '#4f46e5' : '#cbd5e1'} />
+                    <Cell key={`cell-${index}`} fill={index === stats.recentTrend.length - 1 ? '#6366f1' : '#cbd5e1'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -118,7 +118,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
         </div>
 
         {/* AI Insight Section */}
-        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-6 rounded-2xl shadow-lg text-white flex flex-col">
+        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 dark:from-indigo-800 dark:to-purple-900 p-6 rounded-2xl shadow-lg text-white flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold flex items-center">
               <Sparkles className="mr-2" size={20} /> AI 목회 리포트

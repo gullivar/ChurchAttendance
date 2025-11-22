@@ -134,14 +134,14 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-6">
+      <div className="flex flex-col md:flex-col justify-start items-start mb-6 gap-6">
         <div className="flex flex-col items-start">
-          <h2 className="text-3xl font-bold text-gray-800">학생 관리</h2>
-          <p className="text-gray-500 text-sm mt-1">총 {students.length}명의 학생이 등록되어 있습니다.</p>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white">학생 관리</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">총 {students.length}명의 학생이 등록되어 있습니다.</p>
         </div>
         
-        {/* Action Buttons Stack */}
-        <div className="grid grid-cols-1 gap-2 w-full md:w-64 shrink-0">
+        {/* Action Buttons Stack - Full Width */}
+        <div className="grid grid-cols-1 gap-2 w-full">
             <input 
                 type="file" 
                 accept=".csv" 
@@ -151,14 +151,14 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
             />
             <button
                 onClick={handleImportClick}
-                className="w-full flex items-center justify-center px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition shadow-sm font-medium whitespace-nowrap"
+                className="w-full flex items-center justify-center px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm font-medium whitespace-nowrap"
             >
                 <Upload size={18} className="mr-2" />
                 명단 가져오기
             </button>
             <button
                 onClick={handleExportCSV}
-                className="w-full flex items-center justify-center px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition shadow-sm font-medium whitespace-nowrap"
+                className="w-full flex items-center justify-center px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm font-medium whitespace-nowrap"
             >
                 <Download size={18} className="mr-2" />
                 명단 내보내기
@@ -166,7 +166,7 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
             <button
                 onClick={handleGenerateMock}
                 disabled={isGenerating}
-                className="w-full flex items-center justify-center px-4 py-3 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition disabled:opacity-50 font-medium whitespace-nowrap"
+                className="w-full flex items-center justify-center px-4 py-3 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition disabled:opacity-50 font-medium whitespace-nowrap"
             >
                 <Wand2 size={18} className={`mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
                 {isGenerating ? '생성 중...' : 'AI 샘플 데이터'}
@@ -181,14 +181,14 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div className="p-4 border-b border-gray-100 dark:border-gray-700">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input 
               type="text" 
               placeholder="이름, 셀, 선생님 이름으로 검색..." 
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -197,7 +197,7 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-gray-600 font-medium">
+            <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 font-medium">
               <tr>
                 <th className="px-3 py-3 whitespace-nowrap">이름</th>
                 <th className="px-3 py-3 whitespace-nowrap">학년</th>
@@ -206,17 +206,17 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
                 <th className="px-3 py-3 whitespace-nowrap text-right">관리</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
               {filteredStudents.length > 0 ? filteredStudents.map(student => (
-                <tr key={student.id} className="hover:bg-gray-50 transition">
-                  <td className="px-3 py-3 font-medium text-gray-900 whitespace-nowrap">{student.name}</td>
-                  <td className="px-3 py-3 text-gray-600 whitespace-nowrap">
-                    <span className="px-2 py-1 bg-gray-100 rounded text-xs font-semibold text-gray-600">
+                <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                  <td className="px-3 py-3 font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{student.name}</td>
+                  <td className="px-3 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs font-semibold text-gray-600 dark:text-gray-300">
                         {student.grade}
                     </span>
                   </td>
-                  <td className="px-3 py-3 text-gray-600 whitespace-nowrap">{student.cellName}</td>
-                  <td className="px-3 py-3 text-gray-600 whitespace-nowrap">{student.teacherName}</td>
+                  <td className="px-3 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">{student.cellName}</td>
+                  <td className="px-3 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">{student.teacherName}</td>
                   <td className="px-3 py-3 text-right space-x-2 whitespace-nowrap">
                     <button onClick={() => handleOpenEdit(student)} className="text-gray-400 hover:text-indigo-600 transition inline-block">
                       <Edit2 size={18} />
@@ -228,9 +228,9 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-400">
+                  <td colSpan={5} className="px-6 py-12 text-center text-gray-400 dark:text-gray-500">
                     <div className="flex flex-col items-center justify-center">
-                        <UserPlus size={48} className="mb-4 text-gray-300" />
+                        <UserPlus size={48} className="mb-4 text-gray-300 dark:text-gray-600" />
                         <p>등록된 학생이 없습니다.</p>
                         <p className="text-xs mt-1">우측 상단의 버튼을 눌러 학생을 추가해보세요.</p>
                     </div>
@@ -245,29 +245,29 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
-            <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-lg text-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
+            <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600 flex justify-between items-center">
+              <h3 className="font-bold text-lg text-gray-800 dark:text-white">
                 {students.some(s => s.id === currentStudent.id) ? '학생 정보 수정' : '새 학생 등록'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">✕</button>
             </div>
             <form onSubmit={handleSave} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">이름</label>
                 <input 
                   required
                   type="text" 
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   value={currentStudent.name || ''}
                   onChange={e => setCurrentStudent({...currentStudent, name: e.target.value})}
                   placeholder="예: 김철수"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">학년</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">학년</label>
                 <select 
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                     value={currentStudent.grade || '3학년'}
                     onChange={e => setCurrentStudent({...currentStudent, grade: e.target.value})}
                 >
@@ -277,22 +277,22 @@ const StudentManager: React.FC<StudentManagerProps> = ({ students, onAddStudent,
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">셀</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">셀</label>
                 <input 
                   required
                   type="text" 
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   value={currentStudent.cellName || ''}
                   onChange={e => setCurrentStudent({...currentStudent, cellName: e.target.value})}
                   placeholder="예: 다윗셀"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">담임 선생님</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">담임 선생님</label>
                 <input 
                   required
                   type="text" 
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   value={currentStudent.teacherName || ''}
                   onChange={e => setCurrentStudent({...currentStudent, teacherName: e.target.value})}
                   placeholder="예: 이영희"
